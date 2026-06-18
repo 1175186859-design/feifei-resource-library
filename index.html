@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feifei Resource Library</title>
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --card: #ffffff;
+      --text: #222222;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --main: #111827;
+      --soft: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 64px 20px 36px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 14px;
+      font-size: 42px;
+      letter-spacing: -1px;
+    }
+
+    header p {
+      margin: 0 auto;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto 60px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .search {
+      flex: 1;
+      min-width: 240px;
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    .categories {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .category-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 11px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .category-btn.active {
+      background: var(--main);
+      color: #fff;
+      border-color: var(--main);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    }
+
+    .tag {
+      display: inline-block;
+      width: fit-content;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #374151;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      color: #fff;
+      background: var(--main);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 30px 20px 50px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      header h1 {
+        font-size: 32px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        display: block;
+      }
+
+      .search {
+        width: 100%;
+        margin-bottom: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Feifei Resource Library</h1>
+    <p>
+      一个个人资源分享站。这里会整理我多年收藏、使用、筛选过的工具、模板、学习资料和实用网站。
+    </p>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <input class="search" id="searchInput" placeholder="搜索资源，比如 AI、跨境、电商、设计、模板..." />
+      <div class="categories" id="categoryList"></div>
+    </div>
+
+    <section class="grid" id="resourceGrid"></section>
+  </main>
+
+  <footer>
+    © 2026 Feifei Resource Library. Curated with love.
+  </footer>
+
+  <script>
+    const resources = [
+      {
+        title: "AI 工具导航",
+        category: "AI效率",
+        type: "网站",
+        description: "整理适合日常办公、内容创作、资料处理的 AI 工具入口。",
+        tags: ["AI", "效率", "工具"],
+        link: "#",
+        updated: "2026-06-18"
+      },
+      {
+        title: "跨境电商资料区",
+        category: "跨境电商",
+        type: "资料",
+        description: "后续会放一些跨境电商运营、Listing、关键词、图片需求相关资料。",
+        tags: ["Amazon", "Walmart", "跨境电商"],
+        link: "#",
+        updated: "2026-06-18"
+      },
+      {
+        title: "设计灵感网站合集",
+        category: "设计素材",
+        type: "网站",
+        description: "适合找包装设计、Banner、详情页、视觉风格参考的网站合集。",
+        tags: ["设计", "图片", "灵感"],
+        link: "#",
+        updated: "2026-06-18"
+      },
+      {
+        title: "办公模板收藏",
+        category: "办公模板",
+        type: "模板",
+        description: "适合项目管理、资料整理、复盘分析、计划表等场景的模板资源。",
+        tags: ["Excel", "模板", "办公"],
+        link: "#",
+        updated: "2026-06-18"
+      },
+      {
+        title: "学习资料收藏",
+        category: "学习资料",
+        type: "资料",
+        description: "整理一些适合长期学习、提升认知和技能的公开资料。",
+        tags: ["学习", "资料", "成长"],
+        link: "#",
+        updated: "2026-06-18"
+      },
+      {
+        title: "实用网站工具箱",
+        category: "实用工具",
+        type: "网站",
+        description: "一些平时高频会用到的小工具，比如格式转换、图片压缩、单位换算等。",
+        tags: ["工具", "网站", "效率"],
+        link: "#",
+        updated: "2026-06-18"
+      }
+    ];
+
+    const grid = document.getElementById("resourceGrid");
+    const categoryList = document.getElementById("categoryList");
+    const searchInput = document.getElementById("searchInput");
+
+    let currentCategory = "全部";
+
+    const categories = ["全部", ...new Set(resources.map(item => item.category))];
+
+    function renderCategories() {
+      categoryList.innerHTML = categories.map(category => `
+        <button class="category-btn ${category === currentCategory ? "active" : ""}" onclick="setCategory('${category}')">
+          ${category}
+        </button>
+      `).join("");
+    }
+
+    function renderResources() {
+      const keyword = searchInput.value.trim().toLowerCase();
+
+      const filtered = resources.filter(item => {
+        const matchCategory = currentCategory === "全部" || item.category === currentCategory;
+        const matchKeyword =
+          item.title.toLowerCase().includes(keyword) ||
+          item.category.toLowerCase().includes(keyword) ||
+          item.description.toLowerCase().includes(keyword) ||
+          item.tags.join(" ").toLowerCase().includes(keyword);
+
+        return matchCategory && matchKeyword;
+      });
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="card">
+          <div>
+            <span class="tag">${item.category} · ${item.type}</span>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <div class="meta">标签：${item.tags.join(" / ")}<br>更新：${item.updated}</div>
+          </div>
+          <a class="btn" href="${item.link}" target="_blank">查看资源</a>
+        </article>
+      `).join("");
+    }
+
+    function setCategory(category) {
+      currentCategory = category;
+      renderCategories();
+      renderResources();
+    }
+
+    searchInput.addEventListener("input", renderResources);
+
+    renderCategories();
+    renderResources();
+  </script>
+</body>
+</html>

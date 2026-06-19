@@ -388,6 +388,99 @@
       line-height: 1.8;
     }
 
+    .request-pool {
+      margin-top: 34px;
+      padding: 28px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 7px;
+      font-size: 28px;
+      line-height: 1.25;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .request-pool-action {
+      width: auto;
+      min-width: 132px;
+      flex: 0 0 auto;
+    }
+
+    .request-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .request-item {
+      min-width: 0;
+      padding: 18px;
+      background: #fafafa;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .request-item-top,
+    .request-item-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .request-item-top {
+      margin-bottom: 10px;
+    }
+
+    .request-item-content {
+      margin: 0 0 12px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .request-item-meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .request-meta-chip {
+      max-width: 100%;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      overflow-wrap: anywhere;
+    }
+
+    .request-pool-message {
+      grid-column: 1 / -1;
+      padding: 28px 18px;
+      border-radius: 16px;
+      background: #fafafa;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
     .guide-section {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -473,8 +566,23 @@
       }
 
       .grid,
-      .guide-section {
+      .guide-section,
+      .request-list {
         grid-template-columns: 1fr;
+      }
+
+      .request-pool {
+        padding: 20px 16px;
+        border-radius: 20px;
+      }
+
+      .section-heading {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .request-pool-action {
+        width: 100%;
       }
 
       .card,
@@ -531,6 +639,25 @@
       <div class="empty">正在加载资源，请稍等...</div>
     </section>
 
+    <section class="request-pool" aria-labelledby="requestPoolTitle">
+      <div class="section-heading">
+        <div>
+          <h2 id="requestPoolTitle">大家最近在找</h2>
+          <p>匿名需求池，会根据提交情况不定期补充资源。</p>
+        </div>
+        <button
+          class="btn secondary request-pool-action"
+          id="anonymousRequestButton"
+          type="button"
+        >
+          匿名求资源
+        </button>
+      </div>
+      <div class="request-list" id="requestList" aria-live="polite">
+        <div class="request-pool-message">正在读取匿名需求池...</div>
+      </div>
+    </section>
+
     <section class="guide-section" aria-label="资源获取提示">
       <article class="guide-card wechat">
         <h2>微信引导位</h2>
@@ -551,9 +678,11 @@
     const SHEET_ID = "1H6t9EZYgY0rhE4gCs2M2JEm2I0fuW7mXNA1Cm6XpVSI";
     const SHEET_NAMES = ["跨境相关", "国学", "牛马相关", "影视", "电子书"];
 
-    // 以后你做了“求资源表单”，把这里的 # 换成表单链接
-    const REQUEST_LINK = "#";
+    const REQUEST_LINK =
+      "https://docs.google.com/forms/d/e/1FAIpQLSffpjoKmrYIlY3SqqEjbGlehwDbA3fOZvejN0CW6FA9XAuG2Q/viewform";
+    const REQUEST_SHEET_NAMES = ["需求池", "需求池-表单回复", "表单回复 1", "第 1 张表单回复"];
     const AD_INTERVAL = 8;
+    const REQUEST_LIMIT = 20;
 
     const FIELD_ALIASES = {
       title: ["标题", "名称", "书名"],
@@ -574,6 +703,20 @@
       note: ["备注"]
     };
 
+    const REQUEST_FIELD_ALIASES = {
+      timestamp: ["时间戳", "提交时间", "时间"],
+      type: ["提交类型", "类型"],
+      content: ["需求内容", "需求", "内容"],
+      category: ["分类", "大分类"],
+      keywords: ["关键词", "标签"],
+      preferredDrive: ["希望网盘", "网盘平台"],
+      extra: ["补充说明", "备注"],
+      status: ["处理状态", "状态"],
+      visible: ["是否展示"],
+      heat: ["热度"],
+      updated: ["更新时间"]
+    };
+
     let resources = [];
     let currentCategory = "全部";
 
@@ -581,6 +724,8 @@
     const categoryList = document.getElementById("categoryList");
     const searchInput = document.getElementById("searchInput");
     const resourceCount = document.getElementById("resourceCount");
+    const requestList = document.getElementById("requestList");
+    const anonymousRequestButton = document.getElementById("anonymousRequestButton");
 
     function getCellValue(cell) {
       if (!cell) return "";
@@ -652,6 +797,19 @@
       Object.entries(FIELD_ALIASES).forEach(([field, aliases]) => {
         const normalizedAliases = aliases.map(normalizeHeader);
         const index = normalizedValues.findIndex(value => normalizedAliases.includes(value));
+        if (index !== -1) map[field] = index;
+      });
+
+      return map;
+    }
+
+    function buildAliasMap(values, aliases) {
+      const normalizedValues = values.map(normalizeHeader);
+      const map = {};
+
+      Object.entries(aliases).forEach(([field, names]) => {
+        const normalizedNames = names.map(normalizeHeader);
+        const index = normalizedValues.findIndex(value => normalizedNames.includes(value));
         if (index !== -1) map[field] = index;
       });
 
@@ -887,6 +1045,114 @@
       return parseSheetRows(data.table?.rows || [], sheetName, sheetIndex);
     }
 
+    async function fetchRawSheetRows(sheetName) {
+      const params = new URLSearchParams({
+        sheet: sheetName,
+        tqx: "out:json",
+        headers: "0"
+      });
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?${params}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`读取工作表“${sheetName}”失败：${response.status}`);
+      }
+
+      const text = await response.text();
+      const jsonText = text.substring(
+        text.indexOf("(") + 1,
+        text.lastIndexOf(")")
+      );
+      const data = JSON.parse(jsonText);
+
+      if (data.status === "error") {
+        throw new Error(`工作表“${sheetName}”不存在`);
+      }
+
+      return data.table?.rows || [];
+    }
+
+    function findRequestHeaderRow(rows) {
+      const limit = Math.min(rows.length, 5);
+
+      for (let index = 0; index < limit; index += 1) {
+        const values = (rows[index].c || []).map(getCellValue);
+        const map = buildAliasMap(values, REQUEST_FIELD_ALIASES);
+        if (map.content !== undefined) return { index, map };
+      }
+
+      return { index: -1, map: {} };
+    }
+
+    function hidePersonalInfo(value) {
+      return String(value || "")
+        .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[已隐藏]")
+        .replace(/(?:\+?86[-\s]?)?1[3-9]\d{9}/g, "[已隐藏]")
+        .replace(
+          /(?:微信号?|微\s*信|v\s*x|v信|加我)\s*[:：]?\s*[A-Z0-9_-]{0,30}/gi,
+          "[已隐藏]"
+        )
+        .trim();
+    }
+
+    function truncateText(value, maxLength = 80) {
+      const characters = Array.from(value);
+      return characters.length > maxLength
+        ? `${characters.slice(0, maxLength).join("")}…`
+        : value;
+    }
+
+    function cleanRequestText(value, maxLength = 80) {
+      return truncateText(hidePersonalInfo(value), maxLength);
+    }
+
+    function parseRequestRows(rows) {
+      const { index: headerIndex, map } = findRequestHeaderRow(rows);
+      if (headerIndex === -1) return [];
+
+      return rows
+        .slice(headerIndex + 1)
+        .map((row, index) => {
+          const values = (row.c || []).map(getCellValue);
+          const content = cleanRequestText(getMappedValue(values, map, "content"));
+          if (!content || isHidden(getMappedValue(values, map, "visible"))) return null;
+
+          return {
+            content,
+            type: cleanRequestText(getMappedValue(values, map, "type"), 24) || "求资源",
+            category: cleanRequestText(getMappedValue(values, map, "category"), 24),
+            keywords: cleanRequestText(getMappedValue(values, map, "keywords"), 40),
+            preferredDrive: cleanRequestText(
+              getMappedValue(values, map, "preferredDrive"),
+              24
+            ),
+            status: cleanRequestText(getMappedValue(values, map, "status"), 24) || "已记录",
+            heat: cleanRequestText(getMappedValue(values, map, "heat"), 24),
+            originalIndex: index
+          };
+        })
+        .filter(Boolean)
+        .reverse()
+        .slice(0, REQUEST_LIMIT);
+    }
+
+    async function loadRequestData() {
+      for (const sheetName of REQUEST_SHEET_NAMES) {
+        try {
+          const rows = await fetchRawSheetRows(sheetName);
+          const requests = parseRequestRows(rows);
+          if (requests.length) {
+            renderRequestPool(requests);
+            return;
+          }
+        } catch (error) {
+          console.info(error.message);
+        }
+      }
+
+      renderRequestPool([]);
+    }
+
     async function loadSheetData() {
       try {
         const sheetResources = await Promise.all(
@@ -1032,6 +1298,48 @@
       `;
     }
 
+    function renderRequestPool(requests) {
+      if (!requests.length) {
+        requestList.innerHTML = `
+          <div class="request-pool-message">
+            暂时还没有公开需求。你可以匿名提交第一条资源需求。
+          </div>
+        `;
+        return;
+      }
+
+      requestList.innerHTML = requests.map(request => {
+        const meta = [
+          request.category && `分类：${request.category}`,
+          request.keywords && `关键词：${request.keywords}`,
+          request.preferredDrive && `希望网盘：${request.preferredDrive}`,
+          request.status && `状态：${request.status}`,
+          request.heat && `热度：${request.heat}`
+        ].filter(Boolean);
+
+        return `
+          <article class="request-item">
+            <div class="request-item-top">
+              <span class="badge">${escapeHtml(request.type)}</span>
+              <span class="badge status">${escapeHtml(request.status)}</span>
+            </div>
+            <p class="request-item-content">${escapeHtml(request.content)}</p>
+            ${meta.length ? `
+              <div class="request-item-meta">
+                ${meta.map(item => `
+                  <span class="request-meta-chip">${escapeHtml(item)}</span>
+                `).join("")}
+              </div>
+            ` : ""}
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openRequestForm() {
+      window.open(REQUEST_LINK, "_blank", "noopener,noreferrer");
+    }
+
     function renderResources() {
       const keyword = searchInput.value.trim().toLowerCase();
       const filtered = resources.filter(item => {
@@ -1059,12 +1367,13 @@
           const link = decodeURIComponent(button.dataset.link || "");
           const isRequest = button.dataset.request === "true";
 
+          if (isRequest) {
+            openRequestForm();
+            return;
+          }
+
           if (!link || link === "#") {
-            if (isRequest) {
-              alert("求资源入口还没有配置。后续可以接入飞书表单、Google Form 或腾讯问卷。");
-            } else {
-              alert("这个资源暂时还没有配置链接。");
-            }
+            alert("这个资源暂时还没有配置链接。");
             return;
           }
 
@@ -1074,7 +1383,9 @@
     }
 
     searchInput.addEventListener("input", renderResources);
+    anonymousRequestButton.addEventListener("click", openRequestForm);
     loadSheetData();
+    loadRequestData();
   </script>
 </body>
 </html>

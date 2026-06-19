@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>大环境不好刷到什么就学点什么吧.JPG</title>
+  <meta
+    name="description"
+    content="资深牛马的资料库，整理跨境电商、学习资料、影视书籍、效率工具和其他值得长期保存的资源。"
+  />
+  <meta
+    name="keywords"
+    content="资源库,跨境电商,学习资料,影视资源,电子书,效率工具,网盘资源"
+  />
+  <meta property="og:title" content="Resource Library" />
+  <meta
+    property="og:description"
+    content="资深牛马的资料库，整理跨境电商、学习资料、影视书籍、效率工具和其他值得长期保存的资源。"
+  />
+  <meta property="og:type" content="website" />
 
   <style>
     :root {
@@ -16,10 +30,19 @@
       --main: #111827;
       --soft: #f3f4f6;
       --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --green: #047857;
+      --green-soft: #ecfdf5;
+      --warm: #9a3412;
+      --warm-soft: #fff7ed;
     }
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -30,8 +53,13 @@
       color: var(--text);
     }
 
+    button,
+    input {
+      font: inherit;
+    }
+
     header {
-      padding: 66px 24px 38px;
+      padding: 72px 24px 42px;
       text-align: center;
     }
 
@@ -58,6 +86,9 @@
     }
 
     .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -68,22 +99,43 @@
       font-size: 14px;
     }
 
+    .notice-mark {
+      color: var(--main);
+      font-weight: 800;
+    }
+
     .toolbar {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
     }
 
     .search {
-      flex: 1;
-      min-width: 240px;
-      padding: 14px 16px;
+      width: 100%;
+      padding: 16px 18px 16px 48px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      font-size: 15px;
+      border-radius: 16px;
+      font-size: 16px;
       background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search:focus {
+      border-color: #9ca3af;
+      box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.06);
     }
 
     .categories {
@@ -94,12 +146,19 @@
     }
 
     .category-btn {
+      min-height: 42px;
       border: 1px solid var(--line);
       background: #fff;
-      padding: 10px 14px;
+      padding: 10px 16px;
       border-radius: 999px;
       cursor: pointer;
       font-size: 14px;
+      color: var(--text);
+      transition: transform 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .category-btn:hover {
+      transform: translateY(-1px);
     }
 
     .category-btn.active {
@@ -120,77 +179,160 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
     .card {
+      overflow: hidden;
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px;
-      min-height: 240px;
+      border-radius: 22px;
+      min-height: 390px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .card.request {
-      border: 1px dashed #9ca3af;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.07);
     }
 
-    .tag {
-      display: inline-block;
+    .cover {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.55), transparent 32%),
+        linear-gradient(135deg, #e5e7eb 0%, #f9fafb 45%, #dbeafe 100%);
+      color: #374151;
+      text-align: center;
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-bottom: 1px solid rgba(17, 24, 39, 0.05);
+      pointer-events: none;
+    }
+
+    .cover-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-label {
+      position: relative;
+      z-index: 1;
+      max-width: 90%;
+      font-size: 22px;
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .category-line {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
       width: fit-content;
-      padding: 5px 10px;
+      min-height: 26px;
+      padding: 5px 9px;
       border-radius: 999px;
       background: var(--soft);
       color: #374151;
       font-size: 12px;
-      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
-    .drive {
-      display: inline-block;
-      width: fit-content;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: #eff6ff;
+    .badge.drive {
+      background: var(--blue-soft);
       color: #1d4ed8;
-      font-size: 12px;
-      margin-left: 6px;
-      margin-bottom: 12px;
+    }
+
+    .badge.status {
+      background: var(--green-soft);
+      color: var(--green);
     }
 
     .card h3 {
       margin: 0 0 10px;
       font-size: 20px;
       line-height: 1.4;
+      overflow-wrap: anywhere;
     }
 
-    .card p {
-      margin: 0 0 16px;
+    .card-description {
+      margin: 0 0 14px;
       color: var(--muted);
       line-height: 1.65;
       font-size: 14px;
     }
 
-    .meta {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.8;
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       margin-bottom: 14px;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      color: #4b5563;
+      font-size: 12px;
+    }
+
+    .meta {
+      margin-top: auto;
+      margin-bottom: 14px;
+      padding-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
     }
 
     .code {
       color: var(--main);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .recommendation {
+      color: #b45309;
       font-weight: 700;
     }
 
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
       text-decoration: none;
       color: #fff;
       background: var(--main);
@@ -207,6 +349,34 @@
       background: var(--blue);
     }
 
+    .card.request,
+    .card.promo {
+      min-height: 390px;
+    }
+
+    .card.request {
+      border-style: dashed;
+    }
+
+    .request .cover {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.55), transparent 32%),
+        linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #e0e7ff 100%);
+      color: #1e3a8a;
+    }
+
+    .promo .cover {
+      background:
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,0.65), transparent 30%),
+        linear-gradient(135deg, #ffedd5 0%, #fff7ed 55%, #fef3c7 100%);
+      color: var(--warm);
+    }
+
+    .promo {
+      border-style: dashed;
+      border-color: #fdba74;
+    }
+
     .empty {
       grid-column: 1 / -1;
       text-align: center;
@@ -216,6 +386,40 @@
       border-radius: 20px;
       padding: 50px 20px;
       line-height: 1.8;
+    }
+
+    .guide-section {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .guide-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .guide-card h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .guide-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .guide-card.wechat {
+      background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+    }
+
+    .guide-card.cloud {
+      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
     }
 
     footer {
@@ -228,34 +432,59 @@
 
     @media (max-width: 960px) {
       .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 640px) {
       header {
-        padding-top: 44px;
+        padding: 48px 20px 32px;
       }
 
       header h1 {
-        font-size: 40px;
+        font-size: 42px;
+        letter-spacing: -1.5px;
       }
 
       header p {
         font-size: 20px;
       }
 
-      .grid {
-        grid-template-columns: 1fr;
+      .container {
+        width: min(100% - 24px, 1180px);
       }
 
-      .toolbar {
-        display: block;
+      .notice {
+        border-radius: 16px;
       }
 
       .search {
-        width: 100%;
-        margin-bottom: 14px;
+        min-height: 50px;
+        font-size: 16px;
+      }
+
+      .categories {
+        gap: 8px;
+      }
+
+      .category-btn {
+        min-height: 44px;
+        padding: 10px 15px;
+      }
+
+      .grid,
+      .guide-section {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .card.request,
+      .card.promo {
+        min-height: 0;
+      }
+
+      .cover-label {
+        font-size: 20px;
       }
 
       footer {
@@ -267,32 +496,50 @@
 
 <body>
   <header>
-    <h1>Feifei Resource Library</h1>
+    <h1>Resource Library</h1>
     <p>资深牛马的资料库 - 不爱冲咖啡的纹身师不是一个及格的跨境人</p>
   </header>
 
   <main class="container">
     <div class="notice">
-      资源建议先保存到自己的网盘后再查看。没有找到想要的资源，可以使用页面里的“求资源”入口。
+      <span class="notice-mark">提示</span>
+      <span>资源建议先保存到自己的网盘后再查看。没有找到想要的资源，可以使用页面里的“求资源”入口。</span>
     </div>
 
     <div class="toolbar">
-      <input
-        class="search"
-        id="searchInput"
-        placeholder="搜索资源，比如 Amazon、TikTok、Python、电影、书籍..."
-      />
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          class="search"
+          id="searchInput"
+          type="search"
+          autocomplete="off"
+          aria-label="搜索资源"
+          placeholder="搜索标题、分类、标签、简介或网盘平台..."
+        />
+      </div>
     </div>
 
-    <div class="categories" id="categoryList"></div>
+    <div class="categories" id="categoryList" aria-label="资源分类"></div>
 
     <div class="status-bar">
       <div id="resourceCount">正在读取资源...</div>
       <div>数据来源：Google Sheet 自动同步</div>
     </div>
 
-    <section class="grid" id="resourceGrid">
+    <section class="grid" id="resourceGrid" aria-live="polite">
       <div class="empty">正在加载资源，请稍等...</div>
+    </section>
+
+    <section class="guide-section" aria-label="资源获取提示">
+      <article class="guide-card wechat">
+        <h2>微信引导位</h2>
+        <p>想要更多资源更新，可以关注后续入口或提交需求。这里已预留位置，之后可以替换为二维码或联系入口。</p>
+      </article>
+      <article class="guide-card cloud">
+        <h2>网盘使用提示</h2>
+        <p>建议先保存到自己的网盘再查看，方便长期整理和使用，也能尽量避免原链接失效带来的影响。</p>
+      </article>
     </section>
   </main>
 
@@ -306,6 +553,26 @@
 
     // 以后你做了“求资源表单”，把这里的 # 换成表单链接
     const REQUEST_LINK = "#";
+    const AD_INTERVAL = 8;
+
+    const FIELD_ALIASES = {
+      title: ["标题", "名称", "书名"],
+      mainCategory: ["大分类", "平台", "分类"],
+      subCategory: ["小分类"],
+      tags: ["标签"],
+      description: ["一句话介绍", "简介", "介绍"],
+      cover: ["封面图", "封面", "图片"],
+      drive: ["网盘平台"],
+      link: ["网盘链接", "链接", "链接（所有资料先保存再查看）"],
+      code: ["提取码"],
+      buttonText: ["按钮文案"],
+      recommendation: ["推荐指数"],
+      status: ["状态"],
+      sort: ["排序"],
+      pinned: ["是否置顶"],
+      visible: ["是否展示"],
+      note: ["备注"]
+    };
 
     let resources = [];
     let currentCategory = "全部";
@@ -320,44 +587,53 @@
       return String(cell.v ?? cell.f ?? "").trim();
     }
 
+    function normalizeHeader(value) {
+      return String(value || "").replace(/\s+/g, "").trim();
+    }
+
     function isUrl(value) {
-      return /^https?:\/\//i.test(value);
+      return /^https?:\/\//i.test(String(value || "").trim());
     }
 
-    function isIndexLike(value) {
-      return /^\d+$/.test(value);
+    function safeUrl(value) {
+      return isUrl(value) ? String(value).trim() : "";
     }
 
-    function isHeaderLike(value) {
-      const headers = [
-        "Unnamed: 0",
-        "Unnamed: 1",
-        "平台",
-        "分类",
-        "名称",
-        "书名",
-        "链接",
-        "链接（所有资料先保存再查看）"
-      ];
-      return headers.includes(value);
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function splitTags(value) {
+      return [...new Set(
+        String(value || "")
+          .split(/[,，、/|；;\n]+/)
+          .map(tag => tag.trim())
+          .filter(Boolean)
+      )];
     }
 
     function detectDrive(link) {
       if (link.includes("pan.baidu.com")) return "百度网盘";
       if (link.includes("pan.quark.cn")) return "夸克网盘";
-      if (link.includes("aliyundrive")) return "阿里云盘";
+      if (link.includes("aliyundrive") || link.includes("alipan.com")) return "阿里云盘";
       if (link.includes("lanzou")) return "蓝奏云";
-      return "网盘/外部链接";
+      return link ? "网盘/外部链接" : "";
     }
 
     function extractCode(link) {
-      const match = link.match(/[?&]pwd=([^&]+)/i);
+      const match = String(link || "").match(/[?&]pwd=([^&]+)/i);
       return match ? decodeURIComponent(match[1]) : "";
     }
 
-    function detectType(category, drive) {
-      if (["电影", "电视剧", "纪录片", "影视"].includes(category)) return "影视资源";
-      if (category === "书籍") return "书籍资源";
+    function detectType(mainCategory, subCategory, drive) {
+      const categories = `${mainCategory} ${subCategory}`;
+      if (/电影|电视剧|纪录片|影视/.test(categories)) return "影视资源";
+      if (/书籍|电子书/.test(categories)) return "书籍资源";
       if (drive.includes("网盘")) return "网盘资源";
       return "资源";
     }
@@ -365,77 +641,226 @@
     function normalizeCategory(category, title, sheetName) {
       if (category) return category;
       if (sheetName === "电子书") return "书籍";
-      if (title.includes("电影") || title.includes("纪录片") || title.includes("剧")) return "影视";
-      return "书籍";
+      if (/电影|纪录片|电视剧|影视/.test(title)) return "影视";
+      return sheetName || "其他";
     }
 
-    function parseSheetRows(rows, sheetName) {
+    function buildHeaderMap(values) {
+      const normalizedValues = values.map(normalizeHeader);
+      const map = {};
+
+      Object.entries(FIELD_ALIASES).forEach(([field, aliases]) => {
+        const normalizedAliases = aliases.map(normalizeHeader);
+        const index = normalizedValues.findIndex(value => normalizedAliases.includes(value));
+        if (index !== -1) map[field] = index;
+      });
+
+      return map;
+    }
+
+    function findHeaderRow(rows) {
+      const limit = Math.min(rows.length, 5);
+
+      for (let index = 0; index < limit; index += 1) {
+        const values = (rows[index].c || []).map(getCellValue);
+        const map = buildHeaderMap(values);
+        if (map.title !== undefined && map.link !== undefined) {
+          return { index, map };
+        }
+      }
+
+      return { index: -1, map: {} };
+    }
+
+    function getMappedValue(values, map, field) {
+      const index = map[field];
+      return index === undefined ? "" : String(values[index] || "").trim();
+    }
+
+    function isHidden(value) {
+      return ["否", "false", "0", "no"].includes(String(value || "").trim().toLowerCase());
+    }
+
+    function isPinned(value) {
+      return ["是", "true", "1", "yes", "置顶"].includes(String(value || "").trim().toLowerCase());
+    }
+
+    function parseNumber(value, fallback) {
+      const match = String(value || "").match(/-?\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : fallback;
+    }
+
+    function parseRecommendation(value) {
+      const text = String(value || "").trim();
+      const number = parseNumber(text, NaN);
+      if (Number.isFinite(number)) return number;
+      const stars = (text.match(/[★⭐]/g) || []).length;
+      return stars || 0;
+    }
+
+    function parseLegacyRow(values, sheetName) {
+      const linkIndex = values.findIndex(isUrl);
+      if (linkIndex === -1) return null;
+
+      const beforeLink = values
+        .slice(0, linkIndex)
+        .map(value => value.trim())
+        .filter(Boolean)
+        .filter(value => !/^\d+$/.test(value));
+
+      if (!beforeLink.length) return null;
+
+      const title = beforeLink[beforeLink.length - 1];
+      const category = normalizeCategory(
+        beforeLink.length >= 2 ? beforeLink[beforeLink.length - 2] : "",
+        title,
+        sheetName
+      );
+
+      return {
+        title,
+        mainCategory: category,
+        subCategory: "",
+        tags: [],
+        description: "",
+        cover: "",
+        drive: "",
+        link: values[linkIndex],
+        code: "",
+        buttonText: "",
+        recommendation: "",
+        status: "",
+        sort: "",
+        pinned: "",
+        visible: "",
+        note: ""
+      };
+    }
+
+    function createResource(raw, sheetName, originalIndex) {
+      const title = raw.title.trim();
+      const link = safeUrl(raw.link);
+
+      if (!title || !link || isHidden(raw.visible)) return null;
+
+      const mainCategory = normalizeCategory(raw.mainCategory, title, sheetName);
+      const subCategory = raw.subCategory.trim();
+      const drive = raw.drive.trim() || detectDrive(link);
+      const type = detectType(mainCategory, subCategory, drive);
+      const tags = splitTags(raw.tags);
+      const displayTags = tags.length ? tags : [mainCategory, subCategory, type].filter(Boolean);
+
+      return {
+        title,
+        mainCategory,
+        subCategory,
+        category: mainCategory,
+        tags: displayTags,
+        description: raw.description.trim() ||
+          `「${title}」相关资源，建议先保存到自己的网盘后再查看。`,
+        cover: safeUrl(raw.cover),
+        drive,
+        link,
+        code: raw.code.trim() || extractCode(link),
+        buttonText: raw.buttonText.trim() || "获取资源",
+        recommendation: raw.recommendation.trim(),
+        recommendationScore: parseRecommendation(raw.recommendation),
+        status: raw.status.trim() || "可获取",
+        type,
+        note: raw.note.trim(),
+        sortValue: parseNumber(raw.sort, Number.POSITIVE_INFINITY),
+        isPinned: isPinned(raw.pinned),
+        originalIndex,
+        isRequest: false,
+        isPromo: false
+      };
+    }
+
+    function parseSheetRows(rows, sheetName, sheetIndex) {
+      const { index: headerIndex, map } = findHeaderRow(rows);
       const parsed = [];
+      const startIndex = headerIndex === -1 ? 0 : headerIndex + 1;
 
-      rows.forEach(row => {
+      rows.slice(startIndex).forEach((row, rowIndex) => {
         const values = (row.c || []).map(getCellValue);
-        const linkIndex = values.findIndex(isUrl);
+        let raw;
 
-        if (linkIndex === -1) return;
+        if (headerIndex !== -1) {
+          raw = {};
+          Object.keys(FIELD_ALIASES).forEach(field => {
+            raw[field] = getMappedValue(values, map, field);
+          });
+        } else {
+          raw = parseLegacyRow(values, sheetName);
+        }
 
-        const link = values[linkIndex];
+        if (!raw) return;
 
-        const beforeLink = values
-          .slice(0, linkIndex)
-          .map(v => v.trim())
-          .filter(v => v)
-          .filter(v => !isIndexLike(v))
-          .filter(v => !isHeaderLike(v));
-
-        if (beforeLink.length === 0) return;
-
-        const title = beforeLink[beforeLink.length - 1];
-        let category = beforeLink.length >= 2 ? beforeLink[beforeLink.length - 2] : "";
-
-        category = normalizeCategory(category, title, sheetName);
-
-        const drive = detectDrive(link);
-        const code = extractCode(link);
-        const type = detectType(category, drive);
-
-        parsed.push({
-          title,
-          category,
-          type,
-          description: `「${title}」相关资源，建议先保存到自己的网盘后再查看。`,
-          tags: [category, drive, type],
-          drive,
-          link,
-          code,
-          status: "可获取",
-          updated: "自动同步",
-          isRequest: false
-        });
+        const originalIndex = sheetIndex * 100000 + rowIndex;
+        const resource = createResource(raw, sheetName, originalIndex);
+        if (resource) parsed.push(resource);
       });
 
       return parsed;
     }
 
-    function addRequestCard(list) {
-      return [
-        {
-          title: "没有找到想要的资源？",
-          category: "求资源",
-          type: "需求提交",
-          description: "提交你想找的资源名称或关键词，我会根据情况补充到资源库里。",
-          tags: ["求资源", "补档", "申请"],
-          drive: "",
-          link: REQUEST_LINK,
-          code: "",
-          status: "可提交",
-          updated: "长期有效",
-          isRequest: true
-        },
-        ...list
-      ];
+    function sortResources(list) {
+      return [...list].sort((a, b) => {
+        if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1;
+        if (a.sortValue !== b.sortValue) return a.sortValue - b.sortValue;
+        if (a.recommendationScore !== b.recommendationScore) {
+          return b.recommendationScore - a.recommendationScore;
+        }
+        return a.originalIndex - b.originalIndex;
+      });
     }
 
-    async function fetchSheetData(sheetName) {
+    function createRequestCard() {
+      return {
+        title: "没有找到想要的资源？",
+        mainCategory: "求资源",
+        subCategory: "需求提交",
+        category: "求资源",
+        tags: ["求资源", "补档", "申请"],
+        description: "提交你想找的资源名称或关键词，我会根据情况补充到资源库里。",
+        cover: "",
+        drive: "",
+        link: REQUEST_LINK,
+        code: "",
+        buttonText: "提交需求",
+        recommendation: "",
+        status: "可提交",
+        type: "需求提交",
+        note: "",
+        isRequest: true,
+        isPromo: false
+      };
+    }
+
+    function createPromoCard(index) {
+      return {
+        title: "想要更多资源？",
+        mainCategory: "持续更新",
+        subCategory: "资源补充",
+        category: "持续更新",
+        tags: ["资源更新", "提交需求"],
+        description: "加微信或提交需求，后续会持续补充资源。",
+        cover: "",
+        drive: "",
+        link: REQUEST_LINK,
+        code: "",
+        buttonText: "提交需求",
+        recommendation: "",
+        status: "长期有效",
+        type: "引导",
+        note: "",
+        isRequest: false,
+        isPromo: true,
+        promoIndex: index
+      };
+    }
+
+    async function fetchSheetData(sheetName, sheetIndex) {
       const params = new URLSearchParams({
         sheet: sheetName,
         tqx: "out:json",
@@ -459,7 +884,7 @@
         throw new Error(`读取工作表“${sheetName}”失败`);
       }
 
-      return parseSheetRows(data.table?.rows || [], sheetName);
+      return parseSheetRows(data.table?.rows || [], sheetName, sheetIndex);
     }
 
     async function loadSheetData() {
@@ -468,7 +893,7 @@
           SHEET_NAMES.map(fetchSheetData)
         );
 
-        resources = addRequestCard(sheetResources.flat());
+        resources = sortResources(sheetResources.flat());
         renderCategories();
         renderResources();
       } catch (error) {
@@ -484,15 +909,19 @@
     }
 
     function getCategories() {
-      return ["全部", ...new Set(resources.map(item => item.category))];
+      return ["全部", ...new Set(resources.map(item => item.mainCategory).filter(Boolean))];
     }
 
     function renderCategories() {
       const categories = getCategories();
 
       categoryList.innerHTML = categories.map(category => `
-        <button class="category-btn ${category === currentCategory ? "active" : ""}" data-category="${category}">
-          ${category}
+        <button
+          class="category-btn ${category === currentCategory ? "active" : ""}"
+          data-category="${escapeHtml(category)}"
+          type="button"
+        >
+          ${escapeHtml(category)}
         </button>
       `).join("");
 
@@ -505,53 +934,125 @@
       });
     }
 
-    function renderResources() {
-      const keyword = searchInput.value.trim().toLowerCase();
+    function matchesSearch(item, keyword) {
+      const searchableText = [
+        item.title,
+        item.mainCategory,
+        item.subCategory,
+        item.tags.join(" "),
+        item.description,
+        item.drive,
+        item.type,
+        item.note
+      ].join(" ").toLowerCase();
 
-      const filtered = resources.filter(item => {
-        const matchCategory = currentCategory === "全部" || item.category === currentCategory;
+      return searchableText.includes(keyword);
+    }
 
-        const matchKeyword =
-          item.title.toLowerCase().includes(keyword) ||
-          item.category.toLowerCase().includes(keyword) ||
-          item.type.toLowerCase().includes(keyword) ||
-          item.description.toLowerCase().includes(keyword) ||
-          item.drive.toLowerCase().includes(keyword) ||
-          item.tags.join(" ").toLowerCase().includes(keyword);
+    function buildDisplayItems(list) {
+      const displayItems = [createRequestCard()];
 
-        return matchCategory && matchKeyword;
+      list.forEach((item, index) => {
+        displayItems.push(item);
+        if ((index + 1) % AD_INTERVAL === 0 && index + 1 < list.length) {
+          displayItems.push(createPromoCard((index + 1) / AD_INTERVAL));
+        }
       });
 
-      const realResourceCount = resources.filter(item => !item.isRequest).length;
-      const visibleResourceCount = filtered.filter(item => !item.isRequest).length;
-      resourceCount.textContent = `共 ${realResourceCount} 个资源，当前显示 ${visibleResourceCount} 个`;
+      return displayItems;
+    }
 
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="empty">没有找到相关资源，可以试试换个关键词，或者提交求资源需求。</div>`;
-        return;
-      }
+    function renderTags(tags) {
+      if (!tags.length) return "";
+      return `
+        <div class="tags">
+          ${tags.map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`).join("")}
+        </div>
+      `;
+    }
 
-      grid.innerHTML = filtered.map((item, index) => `
-        <article class="card ${item.isRequest ? "request" : ""}">
-          <div>
-            <div>
-              <span class="tag">${item.category} · ${item.type}</span>
-              ${item.drive ? `<span class="drive">${item.drive}</span>` : ""}
+    function renderCover(item) {
+      const label = item.isRequest
+        ? "提交需求"
+        : item.isPromo
+          ? "持续更新"
+          : item.subCategory || item.mainCategory || "资源";
+
+      return `
+        <div class="cover">
+          <span class="cover-label">${escapeHtml(label)}</span>
+          ${item.cover ? `
+            <img
+              class="cover-image"
+              src="${escapeHtml(item.cover)}"
+              alt="${escapeHtml(item.title)}封面"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              onerror="this.remove()"
+            >
+          ` : ""}
+        </div>
+      `;
+    }
+
+    function renderCard(item) {
+      const cardClass = item.isRequest ? "request" : item.isPromo ? "promo" : "";
+      const categoryText = item.subCategory
+        ? `${item.mainCategory} / ${item.subCategory}`
+        : item.mainCategory;
+
+      return `
+        <article class="card ${cardClass}">
+          ${renderCover(item)}
+          <div class="card-body">
+            <div class="category-line">
+              <span class="badge">${escapeHtml(categoryText)}</span>
+              ${item.drive ? `<span class="badge drive">${escapeHtml(item.drive)}</span>` : ""}
+              ${item.status ? `<span class="badge status">${escapeHtml(item.status)}</span>` : ""}
             </div>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p class="card-description">${escapeHtml(item.description)}</p>
+            ${renderTags(item.tags)}
             <div class="meta">
-              状态：${item.status}<br>
-              ${item.code ? `提取码：<span class="code">${item.code}</span><br>` : ""}
-              标签：${item.tags.join(" / ")}<br>
-              更新：${item.updated}
+              类型：${escapeHtml(item.type)}
+              ${item.code ? `<br>提取码：<span class="code">${escapeHtml(item.code)}</span>` : ""}
+              ${item.recommendation ? `<br>推荐指数：<span class="recommendation">${escapeHtml(item.recommendation)}</span>` : ""}
+              ${item.note ? `<br>备注：${escapeHtml(item.note)}` : ""}
             </div>
+            <button
+              class="btn ${item.isRequest || item.isPromo ? "secondary" : ""}"
+              data-link="${encodeURIComponent(item.link)}"
+              data-request="${item.isRequest || item.isPromo}"
+              type="button"
+            >
+              ${escapeHtml(item.buttonText)}
+            </button>
           </div>
-          <button class="btn ${item.isRequest ? "secondary" : ""}" data-link="${encodeURIComponent(item.link)}" data-request="${item.isRequest}">
-            ${item.isRequest ? "提交需求" : "获取资源"}
-          </button>
         </article>
-      `).join("");
+      `;
+    }
+
+    function renderResources() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const filtered = resources.filter(item => {
+        const matchCategory =
+          currentCategory === "全部" || item.mainCategory === currentCategory;
+        return matchCategory && matchesSearch(item, keyword);
+      });
+
+      resourceCount.textContent =
+        `共 ${resources.length} 个资源，当前显示 ${filtered.length} 个`;
+
+      const displayItems = buildDisplayItems(filtered);
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          ${renderCard(createRequestCard())}
+          <div class="empty">没有找到相关资源，可以试试换个关键词，或者提交求资源需求。</div>
+        `;
+      } else {
+        grid.innerHTML = displayItems.map(renderCard).join("");
+      }
 
       document.querySelectorAll(".btn").forEach(button => {
         button.addEventListener("click", () => {
@@ -560,20 +1061,19 @@
 
           if (!link || link === "#") {
             if (isRequest) {
-              alert("求资源表单还没有配置。后续可以接入飞书表单、Google Form 或腾讯问卷。");
+              alert("求资源入口还没有配置。后续可以接入飞书表单、Google Form 或腾讯问卷。");
             } else {
               alert("这个资源暂时还没有配置链接。");
             }
             return;
           }
 
-          window.open(link, "_blank");
+          window.open(link, "_blank", "noopener,noreferrer");
         });
       });
     }
 
     searchInput.addEventListener("input", renderResources);
-
     loadSheetData();
   </script>
 </body>

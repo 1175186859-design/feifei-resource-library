@@ -302,6 +302,7 @@
 
   <script>
     const SHEET_ID = "1H6t9EZYgY0rhE4gCs2M2JEm2I0fuW7mXNA1Cm6XpVSI";
+    const SHEET_NAMES = ["跨境相关", "国学", "牛马相关", "影视", "电子书"];
 
     // 以后你做了“求资源表单”，把这里的 # 换成表单链接
     const REQUEST_LINK = "#";
@@ -361,13 +362,14 @@
       return "资源";
     }
 
-    function normalizeCategory(category, title) {
+    function normalizeCategory(category, title, sheetName) {
       if (category) return category;
+      if (sheetName === "电子书") return "书籍";
       if (title.includes("电影") || title.includes("纪录片") || title.includes("剧")) return "影视";
       return "书籍";
     }
 
-    function parseSheetRows(rows) {
+    function parseSheetRows(rows, sheetName) {
       const parsed = [];
 
       rows.forEach(row => {
@@ -390,7 +392,7 @@
         const title = beforeLink[beforeLink.length - 1];
         let category = beforeLink.length >= 2 ? beforeLink[beforeLink.length - 2] : "";
 
-        category = normalizeCategory(category, title);
+        category = normalizeCategory(category, title, sheetName);
 
         const drive = detectDrive(link);
         const code = extractCode(link);
@@ -433,22 +435,40 @@
       ];
     }
 
+    async function fetchSheetData(sheetName) {
+      const params = new URLSearchParams({
+        sheet: sheetName,
+        tqx: "out:json",
+        headers: "0"
+      });
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?${params}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`读取工作表“${sheetName}”失败：${response.status}`);
+      }
+
+      const text = await response.text();
+      const jsonText = text.substring(
+        text.indexOf("(") + 1,
+        text.lastIndexOf(")")
+      );
+      const data = JSON.parse(jsonText);
+
+      if (data.status === "error") {
+        throw new Error(`读取工作表“${sheetName}”失败`);
+      }
+
+      return parseSheetRows(data.table?.rows || [], sheetName);
+    }
+
     async function loadSheetData() {
       try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=0`;
-        const response = await fetch(url);
-        const text = await response.text();
-
-        const jsonText = text.substring(
-          text.indexOf("(") + 1,
-          text.lastIndexOf(")")
+        const sheetResources = await Promise.all(
+          SHEET_NAMES.map(fetchSheetData)
         );
 
-        const data = JSON.parse(jsonText);
-        const rows = data.table.rows || [];
-
-        resources = addRequestCard(parseSheetRows(rows));
-
+        resources = addRequestCard(sheetResources.flat());
         renderCategories();
         renderResources();
       } catch (error) {
@@ -502,8 +522,9 @@
         return matchCategory && matchKeyword;
       });
 
-      const realResourceCount = Math.max(resources.length - 1, 0);
-      resourceCount.textContent = `共 ${realResourceCount} 个资源，当前显示 ${filtered.length} 个`;
+      const realResourceCount = resources.filter(item => !item.isRequest).length;
+      const visibleResourceCount = filtered.filter(item => !item.isRequest).length;
+      resourceCount.textContent = `共 ${realResourceCount} 个资源，当前显示 ${visibleResourceCount} 个`;
 
       if (filtered.length === 0) {
         grid.innerHTML = `<div class="empty">没有找到相关资源，可以试试换个关键词，或者提交求资源需求。</div>`;

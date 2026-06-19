@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://1175186859-design.github.io/feifei-resource-library/sitemap.xml

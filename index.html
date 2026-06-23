@@ -84,60 +84,42 @@
       font-weight: 600;
     }
 
+    .hero-note {
+      margin-top: 16px;
+      color: #4b5563;
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
     .container {
       width: min(1180px, calc(100% - 32px));
       margin: 0 auto 60px;
     }
 
-    .notice {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: #fff;
-      border: 1px solid var(--line);
+    .warm-note {
+      margin-bottom: 24px;
+      padding: 20px 22px;
+      border: 1px solid #fde7c3;
       border-radius: 18px;
-      padding: 16px 18px;
-      margin-bottom: 20px;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
+      background: linear-gradient(135deg, #fffdf8 0%, #fff7ed 100%);
     }
 
-    .notice-mark {
-      color: var(--main);
-      font-weight: 800;
+    .warm-note h2 {
+      margin: 0 0 8px;
+      color: var(--warm);
+      font-size: 16px;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      min-width: 0;
-      padding: 16px 18px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .stat-value {
-      color: var(--main);
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 800;
+    .warm-note p {
+      margin: 0;
+      color: #6b5b4b;
+      font-size: 15px;
+      line-height: 1.75;
     }
 
     .toolbar {
-      margin-bottom: 18px;
+      margin-bottom: 24px;
     }
 
     .search-wrap {
@@ -170,33 +152,81 @@
       box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.06);
     }
 
-    .categories {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .category-section {
       margin-bottom: 24px;
+      padding: 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .category-section h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .category-btn {
-      min-height: 42px;
+      min-height: 78px;
       border: 1px solid var(--line);
-      background: #fff;
-      padding: 10px 16px;
-      border-radius: 999px;
+      background: #fafafa;
+      padding: 16px;
+      border-radius: 16px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--text);
-      transition: transform 0.2s, background 0.2s, color 0.2s;
+      text-align: left;
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
     }
 
     .category-btn:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
     }
 
     .category-btn.active {
       background: var(--main);
       color: #fff;
       border-color: var(--main);
+    }
+
+    .resource-actions {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .view-all-button {
+      width: auto;
+      min-width: 180px;
+      padding-inline: 22px;
+    }
+
+    .resource-results {
+      scroll-margin-top: 20px;
+    }
+
+    .resource-results[hidden] {
+      display: none;
+    }
+
+    .results-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .results-heading h2 {
+      margin: 0;
+      font-size: 28px;
     }
 
     .status-bar {
@@ -476,7 +506,7 @@
     }
 
     .request-pool {
-      margin-top: 34px;
+      margin-top: 28px;
       padding: 28px;
       background: #fff;
       border: 1px solid var(--line);
@@ -512,7 +542,7 @@
 
     .request-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
     }
 
@@ -568,87 +598,34 @@
       line-height: 1.7;
     }
 
-    .guide-section {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 30px;
-    }
-
-    .guide-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 24px;
-    }
-
-    .guide-card h2 {
-      margin: 0 0 10px;
-      font-size: 20px;
-    }
-
-    .guide-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .guide-card.wechat {
-      background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
-    }
-
-    .guide-card.cloud {
-      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
-    }
-
-    .share-section {
+    .request-cta {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
       margin-top: 30px;
       padding: 24px;
-      border: 1px dashed #cbd5e1;
+      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+      border: 1px dashed #bfdbfe;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.72);
     }
 
-    .share-copy h2 {
-      margin: 0 0 8px;
+    .request-cta h2 {
+      margin: 0 0 10px;
       font-size: 20px;
     }
 
-    .share-copy p {
+    .request-cta p {
       margin: 0;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.7;
     }
 
-    .share-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .request-cta .btn {
+      width: auto;
+      min-width: 132px;
       flex: 0 0 auto;
-    }
-
-    .share-button {
-      min-height: 44px;
-      padding: 11px 16px;
-      border: none;
-      border-radius: 12px;
-      background: var(--main);
-      color: #fff;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .share-status {
-      max-width: 180px;
-      color: var(--green);
-      font-size: 13px;
-      line-height: 1.5;
     }
 
     footer {
@@ -679,12 +656,18 @@
         font-size: 20px;
       }
 
+      .hero-note {
+        font-size: 15px;
+      }
+
       .container {
         width: min(100% - 24px, 1180px);
       }
 
-      .notice {
-        border-radius: 16px;
+      .warm-note,
+      .category-section {
+        padding: 18px 16px;
+        border-radius: 18px;
       }
 
       .search {
@@ -693,29 +676,20 @@
       }
 
       .categories {
-        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
       }
 
       .category-btn {
-        min-height: 44px;
-        padding: 10px 15px;
+        min-height: 68px;
+        padding: 14px;
+        font-size: 15px;
       }
 
       .grid,
-      .guide-section,
       .request-list,
       .recent-list {
         grid-template-columns: 1fr;
-      }
-
-      .stats {
-        gap: 8px;
-      }
-
-      .stat-card {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 14px;
       }
 
       .recent-section {
@@ -737,19 +711,20 @@
         width: 100%;
       }
 
-      .share-section,
-      .share-actions {
+      .request-cta {
         align-items: stretch;
         flex-direction: column;
+        padding: 20px 16px;
       }
 
-      .share-button {
+      .request-cta .btn,
+      .view-all-button {
         width: 100%;
       }
 
-      .share-status {
-        max-width: none;
-        text-align: center;
+      .results-heading {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .card,
@@ -773,26 +748,33 @@
   <header>
     <h1>Resource Library</h1>
     <p>二线城市资深牛马一枚（不想上班版）</p>
+    <div class="hero-note">大环境不好，刷到什么就学点什么吧。</div>
   </header>
 
   <main class="container">
-    <div class="notice">
-      <span class="notice-mark">提示</span>
-      <span>资源建议先保存到自己的网盘后再查看。没有找到想要的资源，可以使用页面里的“求资源”入口。</span>
-    </div>
+    <section class="warm-note" aria-labelledby="warmTitle">
+      <h2 id="warmTitle">今日暖文</h2>
+      <p id="warmText">慢慢来，能学一点是一点。</p>
+    </section>
 
-    <section class="stats" aria-label="资源库统计">
-      <div class="stat-card">
-        <span>当前资源数</span>
-        <strong class="stat-value" id="resourceStat">0</strong>
+    <section class="recent-section" aria-labelledby="recentTitle">
+      <div class="section-heading">
+        <div>
+          <h2 id="recentTitle">最近新增</h2>
+          <p>最近补进资源库的一些内容。</p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span>大家最近在找</span>
-        <strong class="stat-value" id="requestStat">0</strong>
+      <div class="recent-list" id="recentList" aria-live="polite">
+        <div class="recent-message">正在看看最近又塞了点什么...</div>
       </div>
     </section>
 
-    <div class="toolbar">
+    <section class="category-section" aria-labelledby="categoryTitle">
+      <h2 id="categoryTitle">先逛逛这些分类</h2>
+      <div class="categories" id="categoryList" aria-label="资源分类"></div>
+    </section>
+
+    <div class="toolbar" aria-label="搜索资源">
       <div class="search-wrap">
         <span class="search-icon" aria-hidden="true">⌕</span>
         <input
@@ -801,75 +783,54 @@
           type="search"
           autocomplete="off"
           aria-label="搜索资源"
-          placeholder="搜索标题、分类、标签、简介或网盘平台..."
+          placeholder="想找什么？搜一下试试，比如 Amazon、TikTok、Python、电子书。"
         />
       </div>
     </div>
 
-    <div class="categories" id="categoryList" aria-label="资源分类"></div>
-
-    <div class="status-bar">
-      <div id="resourceCount">正在读取资源...</div>
-      <div>数据来源：Google Sheet 自动同步</div>
+    <div class="resource-actions">
+      <button class="btn view-all-button" id="viewAllButton" type="button">
+        查看全部资源
+      </button>
     </div>
 
-    <section class="recent-section" aria-labelledby="recentTitle">
-      <div class="section-heading">
-        <div>
-          <h2 id="recentTitle">最近新增</h2>
-          <p>这里会展示最近补充进资源库的内容，后续会持续更新。</p>
-        </div>
+    <section
+      class="resource-results"
+      id="resourceResults"
+      aria-labelledby="resultsTitle"
+      hidden
+    >
+      <div class="results-heading">
+        <h2 id="resultsTitle">全部资源</h2>
+        <div id="resourceCount">正在读取资源...</div>
       </div>
-      <div class="recent-list" id="recentList" aria-live="polite">
-        <div class="recent-message">正在看看最近又塞了点什么...</div>
+      <div class="status-bar">
+        <div>资源建议先保存到自己的网盘后再查看。</div>
+        <div>数据来源：Google Sheet 自动同步</div>
       </div>
-    </section>
-
-    <section class="grid" id="resourceGrid" aria-live="polite">
-      <div class="empty">正在加载资源，请稍等...</div>
+      <div class="grid" id="resourceGrid" aria-live="polite"></div>
     </section>
 
     <section class="request-pool" aria-labelledby="requestPoolTitle">
       <div class="section-heading">
         <div>
           <h2 id="requestPoolTitle">大家最近在找</h2>
-          <p>匿名需求池，会根据提交情况不定期补充资源。</p>
+          <p>最近 5 条匿名需求，看看大家都在惦记什么。</p>
         </div>
-        <button
-          class="btn secondary request-pool-action"
-          id="anonymousRequestButton"
-          type="button"
-        >
-          匿名求资源
-        </button>
       </div>
       <div class="request-list" id="requestList" aria-live="polite">
         <div class="request-pool-message">正在读取匿名需求池...</div>
       </div>
     </section>
 
-    <section class="guide-section" aria-label="资源获取提示">
-      <article class="guide-card wechat">
-        <h2>微信引导位</h2>
-        <p>想要更多资源更新，可以关注后续入口或提交需求。这里已预留位置，之后可以替换为二维码或联系入口。</p>
-      </article>
-      <article class="guide-card cloud">
-        <h2>网盘使用提示</h2>
-        <p>建议先保存到自己的网盘再查看，方便长期整理和使用，也能尽量避免原链接失效带来的影响。</p>
-      </article>
-    </section>
-
-    <section class="share-section" aria-labelledby="shareTitle">
-      <div class="share-copy">
-        <h2 id="shareTitle">顺手分享一下</h2>
-        <p>觉得有用的话，可以丢给同样不想上班但还想学点东西的朋友。</p>
+    <section class="request-cta" aria-labelledby="requestCtaTitle">
+      <div>
+        <h2 id="requestCtaTitle">没有找到想要的资源？</h2>
+        <p>匿名提交需求，我会根据情况慢慢补。</p>
       </div>
-      <div class="share-actions">
-        <button class="share-button" id="copyLinkButton" type="button">
-          复制网站链接 / 分享给朋友
-        </button>
-        <span class="share-status" id="shareStatus" role="status" aria-live="polite"></span>
-      </div>
+      <button class="btn secondary" id="anonymousRequestButton" type="button">
+        匿名求资源
+      </button>
     </section>
   </main>
 
@@ -885,7 +846,15 @@
       "https://docs.google.com/forms/d/e/1FAIpQLSffpjoKmrYIlY3SqqEjbGlehwDbA3fOZvejN0CW6FA9XAuG2Q/viewform";
     const REQUEST_SHEET_NAMES = ["需求池", "需求池-表单回复", "表单回复 1", "第 1 张表单回复"];
     const AD_INTERVAL = 8;
-    const REQUEST_LIMIT = 20;
+    const REQUEST_LIMIT = 5;
+    const HOME_CATEGORIES = ["跨境相关", "国学", "牛马相关", "影视", "电子书"];
+    const WARM_MESSAGES = [
+      "慢慢来，能学一点是一点。",
+      "今天不想上班，也可以先收藏一个有用的东西。",
+      "不是所有努力都要立刻变现，有些资料先存着，某天真的会用上。",
+      "别急，先把能抓住的小东西抓住。",
+      "打工已经很累了，学习也可以松弛一点。"
+    ];
 
     const FIELD_ALIASES = {
       title: ["标题", "名称", "书名"],
@@ -922,19 +891,20 @@
     };
 
     let resources = [];
-    let currentCategory = "全部";
+    let currentCategory = "";
+    let resourceViewMode = "home";
 
     const grid = document.getElementById("resourceGrid");
+    const resourceResults = document.getElementById("resourceResults");
+    const resultsTitle = document.getElementById("resultsTitle");
     const categoryList = document.getElementById("categoryList");
     const searchInput = document.getElementById("searchInput");
     const resourceCount = document.getElementById("resourceCount");
-    const resourceStat = document.getElementById("resourceStat");
-    const requestStat = document.getElementById("requestStat");
     const recentList = document.getElementById("recentList");
     const requestList = document.getElementById("requestList");
     const anonymousRequestButton = document.getElementById("anonymousRequestButton");
-    const copyLinkButton = document.getElementById("copyLinkButton");
-    const shareStatus = document.getElementById("shareStatus");
+    const viewAllButton = document.getElementById("viewAllButton");
+    const warmText = document.getElementById("warmText");
 
     function getCellValue(cell) {
       if (!cell) return "";
@@ -1167,6 +1137,7 @@
         updatedTime: parseResourceDate(raw.updated),
         sortValue: parseNumber(raw.sort, Number.POSITIVE_INFINITY),
         isPinned: isPinned(raw.pinned),
+        sheetName,
         originalIndex,
         isRequest: false,
         isPromo: false
@@ -1401,8 +1372,9 @@
         resources = sortResources(sheetResources.flat());
         renderCategories();
         renderRecentResources();
-        renderResources();
-        resourceStat.textContent = String(resources.length);
+        if (resourceViewMode !== "home") {
+          renderResources();
+        }
       } catch (error) {
         console.error(error);
         grid.innerHTML = `
@@ -1412,21 +1384,15 @@
           </div>
         `;
         resourceCount.textContent = "资源读取失败";
-        resourceStat.textContent = "0";
         recentList.innerHTML = `
           <div class="recent-message">最近新增暂时读取失败，其他功能不受影响。</div>
         `;
       }
     }
 
-    function getCategories() {
-      return ["全部", ...new Set(resources.map(item => item.mainCategory).filter(Boolean))];
-    }
-
     function renderCategories() {
-      const categories = getCategories();
-
-      categoryList.innerHTML = categories.map(category => `
+      categoryList.innerHTML = [
+        ...HOME_CATEGORIES.map(category => `
         <button
           class="category-btn ${category === currentCategory ? "active" : ""}"
           data-category="${escapeHtml(category)}"
@@ -1434,13 +1400,34 @@
         >
           ${escapeHtml(category)}
         </button>
-      `).join("");
+        `),
+        `
+        <button
+          class="category-btn"
+          data-request-pool="true"
+          type="button"
+        >
+          大家最近在找
+        </button>
+        `
+      ].join("");
 
       document.querySelectorAll(".category-btn").forEach(button => {
         button.addEventListener("click", () => {
+          if (button.dataset.requestPool === "true") {
+            document.getElementById("requestPoolTitle").scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+            return;
+          }
+
           currentCategory = button.dataset.category;
+          resourceViewMode = "category";
+          searchInput.value = "";
           renderCategories();
           renderResources();
+          showResourceResults();
         });
       });
     }
@@ -1544,8 +1531,6 @@
     }
 
     function renderRequestPool(requests) {
-      requestStat.textContent = String(requests.length);
-
       if (!requests.length) {
         requestList.innerHTML = `
           <div class="request-pool-message">
@@ -1623,38 +1608,28 @@
       window.open(REQUEST_LINK, "_blank", "noopener,noreferrer");
     }
 
-    async function copyCurrentUrl() {
-      const pageUrl = window.location.href;
-
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(pageUrl);
-        } else {
-          const textarea = document.createElement("textarea");
-          textarea.value = pageUrl;
-          textarea.setAttribute("readonly", "");
-          textarea.style.position = "fixed";
-          textarea.style.opacity = "0";
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand("copy");
-          textarea.remove();
-        }
-
-        shareStatus.textContent = "已复制链接，去丢给朋友吧。";
-      } catch (error) {
-        shareStatus.textContent = "复制失败，可以直接复制浏览器地址。";
+    function showResourceResults() {
+      const wasHidden = resourceResults.hidden;
+      resourceResults.hidden = false;
+      if (wasHidden) {
+        resourceResults.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
 
     function renderResources() {
       const keyword = searchInput.value.trim().toLowerCase();
       const filtered = resources.filter(item => {
-        const matchCategory =
-          currentCategory === "全部" || item.mainCategory === currentCategory;
+        const matchCategory = resourceViewMode !== "category" ||
+          item.sheetName === currentCategory ||
+          item.mainCategory === currentCategory;
         return matchCategory && matchesSearch(item, keyword);
       });
 
+      resultsTitle.textContent = resourceViewMode === "search"
+        ? "搜索结果"
+        : resourceViewMode === "category"
+          ? "分类资源"
+          : "全部资源";
       resourceCount.textContent =
         `共 ${resources.length} 个资源，当前显示 ${filtered.length} 个`;
 
@@ -1689,9 +1664,35 @@
       });
     }
 
-    searchInput.addEventListener("input", renderResources);
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.trim();
+      if (!keyword) {
+        resourceViewMode = "home";
+        currentCategory = "";
+        resourceResults.hidden = true;
+        renderCategories();
+        return;
+      }
+
+      resourceViewMode = "search";
+      currentCategory = "";
+      renderCategories();
+      renderResources();
+      showResourceResults();
+    });
+
+    viewAllButton.addEventListener("click", () => {
+      resourceViewMode = "all";
+      currentCategory = "";
+      searchInput.value = "";
+      renderCategories();
+      renderResources();
+      showResourceResults();
+    });
+
     anonymousRequestButton.addEventListener("click", openRequestForm);
-    copyLinkButton.addEventListener("click", copyCurrentUrl);
+    warmText.textContent =
+      WARM_MESSAGES[Math.floor(Math.random() * WARM_MESSAGES.length)];
     loadSheetData();
     loadRequestData();
   </script>
